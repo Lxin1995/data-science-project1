@@ -1,8 +1,8 @@
 
 mysql:
-    username: 'root'
-    password: 'x9Liu12@'
-    endpoint: localhost
+    username: ''
+    password: ''
+    endpoint: 
     database: steam
 
 
