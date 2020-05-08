@@ -11,9 +11,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.types import BigInteger, Integer
 import pandas as pd
 
-# check 
-# https://steamcommunity.com/dev 
-# https://developer.valvesoftware.com/wiki/Steam_Web_API
 
 def main():
     path_dir = os.path.dirname(os.path.realpath(__file__))
@@ -109,7 +106,7 @@ def save_owned_games(engine):
                                 'playtime_forever' : playtime_forever
                             }
                         })
-    df_owned_games = pd.DataFrame.from_dict(dic_owned_games, 'index')   ##orient='index' means using dictionary keys as rows
+    df_owned_games = pd.DataFrame.from_dict(dic_owned_games, 'index')  
     df_owned_games.to_sql(
         'steam_owned_games', 
         engine, 
