@@ -133,7 +133,7 @@ def recommendation_item_based(engine):
 
 
 
-# Model 4: Collaborative Filtering
+# Model 4: Alternating least squares
 
 def recommendation_als_based(engine):
 
