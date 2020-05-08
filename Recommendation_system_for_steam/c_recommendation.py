@@ -22,7 +22,7 @@ from pyspark.sql import SQLContext
 
 def main():
 
-    path_dir = os.path.dirname(os.path.realpath(__file__))    ##这个返回的是当前的路径
+    path_dir = os.path.dirname(os.path.realpath(__file__))   
     os.chdir(path_dir)
 
     config = yaml.safe_load(open('config.yaml'))
@@ -110,7 +110,7 @@ def recommendation_content_based(engine):
 # Model 3: item based
 def recommendation_item_based(engine):
 
-    df_purchase = pd.read_sql_query(     ##这个pivot_table貌似用法很神奇的样子
+    df_purchase = pd.read_sql_query(   
         ''' 
         SELECT app_id, user_id         
         FROM steam_owned_games
@@ -137,7 +137,7 @@ def recommendation_item_based(engine):
 
 def recommendation_als_based(engine):
 
-    config = yaml.safe_load(open('{}/config.yaml'.format(os.path.dirname(os.path.realpath(__file__)))))  ##后面这个是当前文件的路径，然后前面有个/config.yaml。就是返回当前路径下的confid.yaml这个文件
+    config = yaml.safe_load(open('{}/config.yaml'.format(os.path.dirname(os.path.realpath(__file__)))))  
     db_username = config['mysql']['username']
     db_password = config['mysql']['password']
     db_endpoint = config['mysql']['endpoint']
@@ -148,10 +148,7 @@ def recommendation_als_based(engine):
     spark = SparkSession(sc)
 
 
-    # Windows users: move your MySQL JDBC driver to the jars folder of pyspark
-    # Ref: https://stackoverflow.com/questions/49011012/cant-connect-to-mysql-database-from-pyspark-getting-jdbc-error
 
-    ##创建临时表：11
     spark.read.format("jdbc").option("url", "jdbc:mysql://{}/{}".format(db_endpoint, db_database))\
                 .option("user", db_username).option("password", db_password)\
                 .option("dbtable", "steam_owned_games")\
@@ -168,19 +165,6 @@ def recommendation_als_based(engine):
 
 
 
-
-    df1=spark.read.format("jdbc").option("url", "jdbc:mysql://{}/{}".format(db_endpoint, db_database))\
-                .option("user", db_username).option("password", db_password)\
-                .option("dbtable", "steam_owned_games")\
-                .option("driver", "com.mysql.cj.jdbc.Driver")\
-                .load().toPandas()
-    df2=spark.read.format("jdbc").option("url", "jdbc:mysql://{}/{}".format(db_endpoint, db_database))\
-                .option("user", db_username).option("password", db_password)\
-                .option("dbtable", "steam_app_details")\
-                .option("driver", "com.mysql.cj.jdbc.Driver")\
-                .load().toPandas()
-    df1.to_sql('user_inventory', engine,chunksize = 1000, index = False)
-    df2.to_sql('game_steam_app', engine, chunksize=1000, index=False)
 
     df_user_playtime = spark.sql('''
         SELECT 
