@@ -18,12 +18,12 @@ def main():
 
 
 
-def get_app_details():   ##this one does not need API key
+def get_app_details(): 
     
     url = 'http://api.steampowered.com/ISteamApps/GetAppList/v2'
     r = requests.get(url)
     dic_steam_app = r.json()
-    lst_app_id = [i.get('appid') for i in dic_steam_app.get('applist',{}).get('apps',[])]    ##return one list containing all appid
+    lst_app_id = [i.get('appid') for i in dic_steam_app.get('applist',{}).get('apps',[])]   
     with open('/Users/liuxin/Documents/data_lab/Game_Recommender/steam_app_details.txt', 'w') as f:
         for app_id in tqdm(sorted(lst_app_id), desc = 'Get App Details'):
             for i in range(3):
